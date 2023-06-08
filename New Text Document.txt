@@ -1,0 +1,31 @@
+<?php 
+    
+    require_once 'dbmsConnect.php';     // for database Connection
+ 
+    if( ISSET( $_POST['login'] ) ) {
+
+        if( $_POST['txt_email'] != "" || $_POST['txt_password'] != ""){
+
+            $v_username = $_POST['txt_email'];
+            $v_password = $_POST['txt_password'];
+
+            $sqlQuery = $DB_Connection->prepare('SELECT * FROM `persons` WHERE `email`=? AND `password`=? ');
+                      
+            $sqlQuery->execute(array($v_username, $v_password));
+
+            $dataRecords = $sqlQuery->rowCount();
+            $fetch = $sqlQuery->fetch();
+
+			      if( $dataRecords > 0 ) {
+				      header("location: view.php");
+            }
+            else{
+                echo"
+                <center>
+                  <h5 class='text-danger'>Invalid username or password</h5>
+                </center>";
+            }
+        }
+      }
+?>
+
